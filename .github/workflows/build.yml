@@ -1,0 +1,25 @@
+name: Build EasyTeX
+
+on:
+  workflow_dispatch:        # "Run workflow" button on GitHub
+  push:
+    tags: ["v*"]            # pushing a tag like v0.1.0 also publishes a release
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        include:
+          - { edition: "",     dmg: EasyTeX.dmg }
+          - { edition: "PLUS", dmg: EasyTeX-PLUS.dmg }
+    runs-on: macos-15
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - run: scripts/build-app.sh ${{ matrix.edition }}
+      - run: scripts/make-dmg.sh ${{ matrix.edition }}
+      - uses: actions/upload-artifact@v4
+        with: { name: "${{ matrix.dmg }}", path: "build/${{ matrix.dmg }}", compression-level: 0 }
+      - if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with: { files: "build/${{ matrix.dmg }}" }

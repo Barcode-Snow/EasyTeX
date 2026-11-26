@@ -1,0 +1,22 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath}
+
+\title{EasyTeX Sample}
+\author{Test}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{Hello}
+This is a test of EasyTeX. Inline math $e^{i\pi}+1=0$ and a display equation:
+\begin{equation}
+  \int_0^\infty e^{-x^2}\,dx = \frac{\sqrt{\pi}}{2}
+\end{equation}
+A citation~\cite{knuth84}.
+
+\input{chapters/intro}
+
+\bibliographystyle{plain}
+\bibliography{refs}
+\end{document}
